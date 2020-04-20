@@ -90,6 +90,25 @@ app.layout = html.Div(
                 ),
             ],
             className="row flex-display",
+        ),
+        html.Div(
+            [
+                html.Div(
+                    dcc.Graph(
+                        id='example-graph-2',
+                        figure={
+                            'data': [
+                                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
+                                {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
+                            ],
+                            'layout': layout
+                        }
+                    ),
+                    id="right-column-2",
+                    className="twelve columns pretty_container",
+                ),
+            ],
+            className="row flex-display",
         )
 
     ],
@@ -97,5 +116,6 @@ app.layout = html.Div(
     style={"display": "flex", "flex-direction": "column"}
 )
 
-if __name__ == '__main__':
-    app.run_server(port=8000)
+# if __name__ == '__main__':
+#     app.run_server(host='0.0.0.0')
+server = app.server
