@@ -11,7 +11,7 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '24dfbcaa-921b-4995-88e8-56c59d0e92a9'
-  imageRepository: 'aitrainerpaitrainer'
+  imageRepository: 'aitrainer/paitrainer:latest'
   containerRegistry: 'cramlws.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
