@@ -20,6 +20,10 @@ layout = dict(
     showlegend= False
 )
 
+demo_options = [
+    {"label": str(_), "value": str(_)}
+    for _ in ["a", "b", "c"]
+]
 
 
 app.layout = html.Div(
@@ -75,18 +79,102 @@ app.layout = html.Div(
         html.Div(
             [
                 html.Div(
-                    dcc.Graph(
-                        id='example-graph',
-                        figure={
-                            'data': [
-                                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-                                {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
+                    [
+                        html.P(
+                            "Filter by construction date (or select range in histogram):",
+                            className="control_label",
+                        ),
+                        dcc.RangeSlider(
+                            id="year_slider",
+                            min=1960,
+                            max=2017,
+                            value=[1990, 2010],
+                            className="dcc_control",
+                        ),
+                        html.P("Filter by well status:", className="control_label"),
+                        dcc.RadioItems(
+                            id="well_status_selector",
+                            options=[
+                                {"label": "All ", "value": "all"},
+                                {"label": "Active only ", "value": "active"},
+                                {"label": "Customize ", "value": "custom"},
                             ],
-                            'layout': layout
-                        }
-                    ),
+                            value="active",
+                            labelStyle={"display": "inline-block"},
+                            className="dcc_control",
+                        ),
+                        dcc.Dropdown(
+                            id="well_statuses",
+                            options=demo_options,
+                            multi=True,
+                            value=["a", "b", "c"],
+                            className="dcc_control",
+                        ),
+                        dcc.Checklist(
+                            id="lock_selector",
+                            options=[{"label": "Lock camera", "value": "locked"}],
+                            className="dcc_control",
+                            value=[],
+                        ),
+                        html.P("Filter by well type:", className="control_label"),
+                        dcc.RadioItems(
+                            id="well_type_selector",
+                            options=[
+                                {"label": "All ", "value": "all"},
+                                {"label": "Productive only ", "value": "productive"},
+                                {"label": "Customize ", "value": "custom"},
+                            ],
+                            value="productive",
+                            labelStyle={"display": "inline-block"},
+                            className="dcc_control",
+                        ),
+                        dcc.Dropdown(
+                            id="well_types",
+                            options=demo_options,
+                            multi=True,
+                            value=["a", "b", "c"],
+                            className="dcc_control",
+                        ),
+                    ],
+                    className="pretty_container four columns",
+                    id="cross-filter-options",
+                ),
+                html.Div(
+                    [
+                        html.Div(
+                            [
+                                html.Div(
+                                    [html.H6(id="well_text"), html.P("No. of Wells")],
+                                    id="wells",
+                                    className="mini_container",
+                                ),
+                                html.Div(
+                                    [html.H6(id="gasText"), html.P("Gas")],
+                                    id="gas",
+                                    className="mini_container",
+                                ),
+                                html.Div(
+                                    [html.H6(id="oilText"), html.P("Oil")],
+                                    id="oil",
+                                    className="mini_container",
+                                ),
+                                html.Div(
+                                    [html.H6(id="waterText"), html.P("Water")],
+                                    id="water",
+                                    className="mini_container",
+                                ),
+                            ],
+                            id="info-container",
+                            className="row container-display",
+                        ),
+                        html.Div(
+                            [dcc.Graph(id="count_graph")],
+                            id="countGraphContainer",
+                            className="pretty_container",
+                        ),
+                    ],
                     id="right-column",
-                    className="twelve columns pretty_container",
+                    className="eight columns",
                 ),
             ],
             className="row flex-display",
@@ -117,5 +205,5 @@ app.layout = html.Div(
 )
 
 # if __name__ == '__main__':
-#     app.run_server(host='0.0.0.0')
+#     app.run_server(debug=True)
 server = app.server
